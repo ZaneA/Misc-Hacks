@@ -1,0 +1,41 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: arial, sans;
+  font-size: 13px; }
+
+body {
+  width: 960px;
+  margin: auto; }
+
+#header {
+  margin: 20px; }
+
+#reddit {
+  width: 300px;
+  margin: 10px; }
+
+#filter {
+  width: 200px;
+  margin: 10px;
+  border: 1px solid #ddd; }
+
+a {
+  display: block;
+  color: #334;
+  text-decoration: none;
+  background: #fdfdff;
+  margin: 2px;
+  padding: 2px;
+  border: 1px solid transparent; }
+
+a:hover {
+  background: #f4f4ff;
+  border: 1px dotted #aaa; }
+
+.subreddit {
+  text-transform: lowercase;
+  color: #888; }
+
+.article {
+  margin: 24px; }

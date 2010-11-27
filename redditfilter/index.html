@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>RedditFilter</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <div id="header">
+      Reddits: <input type="textbox" id="reddit" value="http://reddit.com/r/programming+emacs" /> <input id="reload" type="button" value="(Re)load Articles" /><br />
+      Filter (Updates as you type): <input id="filter" type="textbox" value="" />
+    </div>
+    <div id="articles">
+    </div>
+    <script type="text/javascript">
+      $(function () {
+          function loadReddit() {
+              $.getJSON($("#reddit").val() + "/.json?limit=100&jsonp=?", null, function (data) {
+                  $("#articles").empty();
+
+                  $(data.data.children).each(function (i, e) {
+                      $("#articles").append('<div class="article"><a href="http://reddit.com/' + e.data.permalink + '">' + e.data.title + '</a><span class="subreddit">' + e.data.subreddit + '</span></div>');
+                  });
+
+                  $("title").html("RedditFilter: " + data.data.children.length + " Articles Loaded");
+
+                  $("#filter").keyup();
+              });
+          }
+
+          $("#reload").click(loadReddit);
+          
+          $("#filter").keyup(function (ev) {
+              $(".article").each(function (i, e) {
+                  if ($(e).html().match($("#filter").val()))
+                      $(e).css("display", "block");
+                  else
+                      $(e).css("display", "none");
+              });
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,2 @@
+Just a little reddit filter thing hacked up in client side HTML + JSONP.
+Not sure if it works locally or if it needs to be served from a web server, but yeah.
