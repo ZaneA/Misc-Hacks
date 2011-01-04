@@ -1,0 +1,72 @@
+From 394853052aaf68440373a44d193594978b8e5204 Mon Sep 17 00:00:00 2001
+From: Zane Ashby <zane.a@demonastery.org>
+Date: Wed, 5 Jan 2011 12:44:36 +1300
+Subject: [PATCH] Customized Shadow Rendering, shows up on all windows now, and has modified opacity
+
+---
+ plugins/shadow/ccm-shadow.c |   40 +++++++++++++++++-----------------------
+ 1 files changed, 17 insertions(+), 23 deletions(-)
+
+diff --git a/plugins/shadow/ccm-shadow.c b/plugins/shadow/ccm-shadow.c
+index a2e6af4..c6a6071 100644
+--- a/plugins/shadow/ccm-shadow.c
++++ b/plugins/shadow/ccm-shadow.c
+@@ -285,27 +285,19 @@ ccm_shadow_need_shadow (CCMShadow * self)
+     CCMWindowType type = ccm_window_get_hint_type (window);
+     const CCMRegion *opaque = ccm_window_get_opaque_region (window);
+ 
+-    return self->priv->force_enable || 
+-        (!self->priv->force_disable && 
+-         !ccm_window_is_fullscreen (window) &&
+-         !ccm_window_is_input_only (window) && 
+-         ccm_window_is_viewable (window) && 
+-         type != CCM_WINDOW_TYPE_DESKTOP &&
+-         ((ccm_window_is_decorated (window) && 
+-           type != CCM_WINDOW_TYPE_DOCK) || 
+-          (!ccm_window_is_decorated (window) && 
+-           type == CCM_WINDOW_TYPE_DOCK) ||
+-          (type != CCM_WINDOW_TYPE_NORMAL &&  
+-           type != CCM_WINDOW_TYPE_DIALOG && opaque)) &&
+-         ((type == CCM_WINDOW_TYPE_DOCK && opaque) || 
+-          type != CCM_WINDOW_TYPE_DOCK) && 
+-         (ccm_window_is_managed (window) || 
+-          type == CCM_WINDOW_TYPE_DOCK ||
+-          type == CCM_WINDOW_TYPE_DROPDOWN_MENU || 
+-          type == CCM_WINDOW_TYPE_POPUP_MENU || 
+-          type == CCM_WINDOW_TYPE_TOOLTIP || 
+-          type == CCM_WINDOW_TYPE_MENU || 
+-          type == CCM_WINDOW_TYPE_SPLASH));
++    // ZANE - This works for me..
++    return 
++        !ccm_window_is_fullscreen (window) &&
++        !ccm_window_is_input_only (window) &&
++        ccm_window_is_decorated (window) &&
++        ccm_window_is_viewable (window) &&
++        (type == CCM_WINDOW_TYPE_NORMAL ||
++         type == CCM_WINDOW_TYPE_DIALOG ||
++         type == CCM_WINDOW_TYPE_DROPDOWN_MENU ||
++         type == CCM_WINDOW_TYPE_POPUP_MENU ||
++         type == CCM_WINDOW_TYPE_TOOLTIP ||
++         type == CCM_WINDOW_TYPE_MENU ||
++         type == CCM_WINDOW_TYPE_SPLASH);
+ }
+ 
+ static gboolean
+@@ -704,10 +696,12 @@ ccm_shadow_on_pixmap_damage (CCMShadow* self, CCMRegion* area)
+             cairo_paint (ctx);
+             cairo_set_operator (ctx, CAIRO_OPERATOR_SOURCE);
+ 
+-            cairo_set_source_rgb (ctx,
++            // ZANE - Changed this to RGBA because the default shadow is too dark..
++            cairo_set_source_rgba (ctx,
+                                   (double) ccm_shadow_get_option (self)->color->red / 65535.0f,
+                                   (double) ccm_shadow_get_option (self)->color->green / 65535.0f,
+-                                  (double) ccm_shadow_get_option (self)->color->blue / 65535.0f);
++                                   (double) ccm_shadow_get_option (self)->color->blue / 65535.0f,
++                                   0.25);
+ 
+             cairo_mask_surface (ctx, self->priv->shadow_image, 0, 0);
+ 
+-- 
+1.7.3.4
+
