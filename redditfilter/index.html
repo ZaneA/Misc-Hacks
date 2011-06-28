@@ -16,6 +16,9 @@
     <script type="text/javascript">
       $(function () {
           function loadReddit() {
+              var buttonText = $("#reload").val();
+              $("#reload").val("Loading...");
+
               $.getJSON($("#reddit").val() + "/.json?limit=100&jsonp=?", null, function (data) {
                   $("#articles").empty();
 
@@ -26,6 +29,8 @@
                   $("title").html("RedditFilter: " + data.data.children.length + " Articles Loaded");
 
                   $("#filter").keyup();
+
+                  $("#reload").val(buttonText);
               });
           }
 

@@ -13,12 +13,22 @@ body {
 
 #reddit {
   width: 300px;
-  margin: 10px; }
+  margin: 10px;
+  padding: 4px;
+  border: 1px solid #ddd; }
 
 #filter {
   width: 200px;
   margin: 10px;
   border: 1px solid #ddd; }
+
+#reload {
+  font-size: 10px;
+  font-weight: bold;
+  background: #111;
+  color: #ddd;
+  padding: 4px;
+  border: 1px solid #222; }
 
 a {
   display: block;
@@ -27,11 +37,11 @@ a {
   background: #fdfdff;
   margin: 2px;
   padding: 2px;
-  border: 1px solid transparent; }
+  border: 2px solid transparent; }
 
 a:hover {
   background: #f4f4ff;
-  border: 1px dotted #aaa; }
+  border-bottom: 2px solid #000; }
 
 .subreddit {
   text-transform: lowercase;
